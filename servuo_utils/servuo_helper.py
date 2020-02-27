@@ -24,10 +24,6 @@ class ServUOHelper():
 
     This class allows to manage accounts.xml easily with the server offline.
     """
-    FOLDER_SERVER_LIST = ["Config"]
-    BACKUP_FOLDER_LIST = ["Config", "Saves", "Spawns"]
-    HASH_MD5_RESOURCES = "93945c306b645459c63adddc299e3760"
-
     def __init__(self, working_directory):
         self._working_directory = working_directory
         
@@ -35,6 +31,11 @@ class ServUOHelper():
         self._repository_path = os.path.join(self._working_directory, "resources", "tv")
         self._backup_path = os.path.join(self._working_directory, "backups")
         self._resources_path = os.path.join("resources", "2D")
+
+        self._folder_server_list = ["Config"]
+        self._backup_folder_list = ["Config", "Saves", "Spawns"]
+        self._hash_md5_resources = "93945c306b645459c63adddc299e3760"
+
         return
 
     def _recursive_copy(self, src, dst):
@@ -66,7 +67,7 @@ class ServUOHelper():
         """
         Copy all folders in the SERVER_LIST
         """
-        for folder in FOLDER_SERVER_LIST:
+        for folder in self._folder_server_list:
             file_src = os.path.join(src, folder)
             file_dst = os.path.join(dst, folder)
             logger.info("copying", file_src=file_src, file_dest=file_dst)
@@ -90,8 +91,8 @@ class ServUOHelper():
 
         logger.info("Calculating resources MD5", path=self._resources_path)
         md5hash = dirhash(self._resources_path, 'md5')
-        if not HASH_MD5_RESOURCES == md5hash:
-            logger.error("Bad MD5 checksum for resources", hash=md5hash, expected=HASH_MD5_RESOURCES)
+        if not self._hash_md5_resources == md5hash:
+            logger.error("Bad MD5 checksum for resources", hash=md5hash, expected=self._hash_md5_resources)
             return
             
         logger.info("Resources path looks OK", hash=md5hash)
@@ -121,7 +122,7 @@ class ServUOHelper():
         """
         Generate backup file with timestamp name
 
-        * The saved folders are stored at: BACKUP_FOLDER_LIST
+        * The saved folders are stored at: self._backup_folder_list
         * A tar file will be generated.
         * The name contain the backup timestamp.
         """
@@ -131,7 +132,7 @@ class ServUOHelper():
         logger.info("Generating backup tar file", file=output_file)
 
         with tarfile.open(output_file, 'w') as tar:
-            for folder in BACKUP_FOLDER_LIST:
+            for folder in self._backup_folder_list:
                 current_folder = os.path.join(self._server_path, folder)
                 logger.info("Adding folder", folder=current_folder)
                 tar.add(current_folder, arcname=folder)
