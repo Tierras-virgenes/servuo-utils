@@ -6,6 +6,8 @@ import signal
 
 import argparse
 
+from servuoutils.crossuo import Client
+
 import structlog
 logger = structlog.get_logger()
 
@@ -14,30 +16,16 @@ parser = None
 args = None
 
 WORKING_DIRECTORY = pathlib.Path().absolute()
-ACCOUNT_NAME = 'user'
-PASSWORD = 'user'
+ACCOUNT_NAME = "username"
+PASSWORD = "password"
 BOOL_AUTO_LOGIN = False
 BOOL_REMEMBER = False
+SERVER_IP_PORT = False
 SELECT_THE_ABYSS = False
 SELECT_ASMUT = False
 SELECT_CRYPT = False
-CUSTOM_PATH = '../../../../resources/2D'
-SERVER_IP_PORT = '127.0.0.1,2593'
-CLIENT_VERSION = '7.0.45.0'
 
-help_description = """\n\nThis is a script to generate a basic configuration, in example:\n
-AcctID=${ACCOUNT_NAME}
-AcctPassword=${ACCOUNT_PASSWORD}
-RememberAcctPW=no
-AutoLogin=no
-TheAbyss=no
-Asmut=no
-Crypt=no
-CustomPath=${RESOURCES_PATH}
-LoginServer=127.0.0.1,2593
-ClientVersion=7.0.45.0
-"""
-
+help_description = 'In example: python -m servuoutils.scripts.crossuo_generator -u "testuser" -p "pass" -l -r -o $PWD'
 ################################################################################
 # Functions ####################################################################
 ################################################################################
@@ -47,7 +35,7 @@ def signal_handler(sig, frame):
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
 
-    parser = argparse.ArgumentParser(description="Helper to generate crossuo cfgs." + help_description,
+    parser = argparse.ArgumentParser(description="Helper to generate crossuo cfgs. " + help_description,
                                     formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument('-u','--username', help='List update accounts', type=str, metavar='username')
@@ -64,21 +52,25 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(1)
 
+    client = Client()
+
+    ACCOUNT_NAME = args.username
     PASSWORD = args.password
     BOOL_AUTO_LOGIN = args.auto_login
     BOOL_REMEMBER = args.remember
     SERVER_IP_PORT = args.ip_server
+    SELECT_THE_ABYSS = False
+    SELECT_ASMUT = False
+    SELECT_CRYPT = False
 
-    logger.info("Generating configuration", username=ACCOUNT_NAME,
-                                            password=PASSWORD,
-                                            auto_login=BOOL_AUTO_LOGIN,
-                                            remember=BOOL_REMEMBER,
-                                            abyss=SELECT_THE_ABYSS,
-                                            asmut=SELECT_ASMUT,
-                                            crypt=SELECT_CRYPT,
-                                            resources_path=CUSTOM_PATH,
-                                            server_ip=SERVER_IP_PORT,
-                                            client_version=CLIENT_VERSION,
-                                            output_path=WORKING_DIRECTORY
-    )
+    client.generate(uopath=WORKING_DIRECTORY, 
+                username=ACCOUNT_NAME, 
+                password=PASSWORD, 
+                server_ip_port = SERVER_IP_PORT,
+                custom_path = pathlib.Path().absolute(),
+                bool_auto_login = BOOL_AUTO_LOGIN, 
+                bool_remember = BOOL_REMEMBER,
+                select_the_abyss = SELECT_THE_ABYSS, 
+                select_asmut = SELECT_ASMUT, 
+                select_crypt = SELECT_CRYPT)
     sys.exit(0)

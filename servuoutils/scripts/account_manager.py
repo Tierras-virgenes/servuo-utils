@@ -19,7 +19,6 @@ parser = None
 args = None
 
 ROOT_PATH = pathlib.Path().absolute()
-# TODO change default value to another better
 ACCOUNTS_FILE = os.path.realpath(os.path.join(ROOT_PATH, 
     "submodules", "ServUO", 
     "Saves", "Accounts", "accounts.xml"))
