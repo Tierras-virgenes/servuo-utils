@@ -1,8 +1,10 @@
 import os
+from os.path import splitext, basename, isfile, join
+from pathlib import Path
 
-SCRIPTS_PATH = os.path.join("servuoutils", "scripts")
-SCRIPTS_LIST = [os.path.join(SCRIPTS_PATH, f) for f in os.listdir(SCRIPTS_PATH) 
-                if os.path.isfile(os.path.join(SCRIPTS_PATH, f)) and not f.startswith("__")]
+SCRIPTS_PATH = join(Path(__file__).parent.absolute(), "scripts")
+SCRIPTS_LIST = [basename(splitext(join(SCRIPTS_PATH, f))[0]) for f in os.listdir(SCRIPTS_PATH) 
+                if isfile(join(SCRIPTS_PATH, f)) and not f.startswith("__")]
 
 # https://stackoverflow.com/questions/3178285/list-classes-in-directory-python
 CLASSES_LIST = ["TODO"]

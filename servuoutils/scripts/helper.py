@@ -16,7 +16,9 @@ logger = structlog.get_logger()
 parser = None
 args = None
 
-ROOT_PATH = os.path.join(pathlib.Path().absolute(), "..", "..")
+ROOT_PATH = os.path.realpath(
+    os.path.join(pathlib.Path().absolute()
+    ))
 
 ################################################################################
 # Functions ####################################################################
