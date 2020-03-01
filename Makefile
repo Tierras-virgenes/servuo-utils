@@ -7,7 +7,7 @@ uninstall:
 	pip uninstall -y ${PROJECT} || true
 
 develop: uninstall
-	pip install --editable .
+	python -m pip install --editable .
 
 clean: clean-build clean-pyc clean-dist
 

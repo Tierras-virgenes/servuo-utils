@@ -7,7 +7,7 @@ Python utils to ease manage your own ServUO and keep it updated
 In example:
 
 ```
-python -m servuo_utils.scripts.account_manager -h
+python -m servuoutils.scripts.account_manager -h
 ```
 
 # Developing

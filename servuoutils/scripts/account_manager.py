@@ -7,9 +7,9 @@ import pathlib
 
 import getpass
 
-from servuo_utils.account_manager import EncryptAlgorithm
-from servuo_utils.account_manager import AccessLevel
-from servuo_utils.account_manager import AccountManager
+from servuoutils.account_manager import EncryptAlgorithm
+from servuoutils.account_manager import AccessLevel
+from servuoutils.account_manager import AccountManager
 
 import structlog
 logger = structlog.get_logger()

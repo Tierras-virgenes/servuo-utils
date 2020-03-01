@@ -1,6 +1,6 @@
 import os
 
-SCRIPTS_PATH = os.path.join("servuo_utils", "scripts")
+SCRIPTS_PATH = os.path.join("servuoutils", "scripts")
 SCRIPTS_LIST = [os.path.join(SCRIPTS_PATH, f) for f in os.listdir(SCRIPTS_PATH) 
                 if os.path.isfile(os.path.join(SCRIPTS_PATH, f)) and not f.startswith("__")]
 
@@ -9,7 +9,7 @@ CLASSES_LIST = ["TODO"]
 
 def main():
     print("Usage:")
-    print("To use binaries you can execute them with `python -m servuo_utils.scripts.SCRIPT_NAME -OPTION`")
+    print("To use binaries you can execute them with `python -m servuoutils.scripts.SCRIPT_NAME -OPTION`")
     print("Run one of the following scripts:")
     for script in SCRIPTS_LIST:
         print("\t- " + script)

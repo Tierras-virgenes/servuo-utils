@@ -7,7 +7,7 @@ import argparse
 import shutil
 import pathlib
 
-from servuo_utils.servuo_helper import ServUOHelper
+from servuoutils.servuo_helper import ServUOHelper
 
 import structlog
 logger = structlog.get_logger()
