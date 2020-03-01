@@ -1,4 +1,7 @@
+import os
 import pathlib
+
+from jinja2 import Template
 
 import structlog
 logger = structlog.get_logger()
@@ -24,7 +27,7 @@ class Client():
     def __init__(self):
         self._account_name = 'user'
         self._password = 'user'
-        self._custom_path = pathlib.Path().absolute()
+        self._uopath = pathlib.Path().absolute()
         self._bool_auto_login = False
         self._bool_remember = False
         self._select_the_abyss = False
@@ -33,22 +36,35 @@ class Client():
         
         self._server_ip_port = '127.0.0.1,2593'
         self._client_version = '7.0.45.0'
+
+        self._tm = Template(
+        "AcctID={{ username }}" + "\n" +
+        "AcctPassword={{ password }}" + "\n" +
+        "RememberAcctPW={% if remember %}yes{% else %}no{% endif %}" + "\n" +
+        "AutoLogin={% if auto_login %}yes{% else %}no{% endif %}" + "\n" +
+        "TheAbyss={% if abyss %}yes{% else %}no{% endif %}" + "\n" +
+        "Asmut={% if asmut %}yes{% else %}no{% endif %}" + "\n" +
+        "Crypt={% if crypt %}yes{% else %}no{% endif %}" + "\n" +
+        "CustomPath={{ uopath }}" + "\n" +
+        "LoginServer={{ ipport }}" + "\n" +
+        "ClientVersion={{ client }}" + "\n"
+        )
         return
 
-    def generate(self, uopath, username, password, 
+    def generate(self, path, username, password, 
                 server_ip_port = '127.0.0.1,2593',
-                custom_path = pathlib.Path().absolute(),
+                uopath = pathlib.Path().absolute(),
                 bool_auto_login = False, bool_remember = False,
                 select_the_abyss = False, select_asmut = False, select_crypt = False):
         """
         Generate a config using username, password and other configuration parameters
         """
-        self._uopath = uopath
+        self._path = path
         
         self._account_name = username
         self._password = password
         self._server_ip_port = server_ip_port
-        self._custom_path = custom_path
+        self._uopath = uopath
 
         self._bool_auto_login = bool_auto_login
         self._bool_remember = bool_remember
@@ -59,10 +75,10 @@ class Client():
         
         self._client_version = '7.0.45.0'
 
-        logger.info("generating_cfg", uopath = self._uopath,
+        logger.info("generating_cfg", path = self._path,
             username = self._account_name,
             ipport=self._server_ip_port,
-            custom_path = self._custom_path,
+            uopath = self._uopath,
             auto_login=self._bool_auto_login,
             remember=self._bool_remember,
             abyss=self._select_the_abyss,
@@ -70,4 +86,19 @@ class Client():
             crypt=self._select_crypt,
             client=self._client_version
         )
-        return
+
+        msg = self._tm.render(username = self._account_name,
+            password = self._password,
+            ipport = self._server_ip_port,
+            uopath = self._uopath,
+            auto_login = self._bool_auto_login,
+            remember = self._bool_remember,
+            abyss = self._select_the_abyss,
+            asmut = self._select_asmut,
+            crypt = self._select_crypt,
+            client = self._client_version
+        )
+        filename = os.path.join(self._path, "crossuo.cfg")
+        with open(filename, "w") as fd:
+            fd.write(msg)
+        return True

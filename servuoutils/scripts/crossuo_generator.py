@@ -63,11 +63,11 @@ if __name__ == "__main__":
     SELECT_ASMUT = False
     SELECT_CRYPT = False
 
-    client.generate(uopath=WORKING_DIRECTORY, 
+    client.generate(path=WORKING_DIRECTORY, 
                 username=ACCOUNT_NAME, 
                 password=PASSWORD, 
                 server_ip_port = SERVER_IP_PORT,
-                custom_path = pathlib.Path().absolute(),
+                uopath = pathlib.Path().absolute(),
                 bool_auto_login = BOOL_AUTO_LOGIN, 
                 bool_remember = BOOL_REMEMBER,
                 select_the_abyss = SELECT_THE_ABYSS, 
