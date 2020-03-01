@@ -24,6 +24,7 @@ setup(
     description="ServUO utils in python to manage your own shard server",
     long_description=README,
     long_description_content_type="text/markdown",
+    keywords='servuo utils ultima online custom server',
     url="https://github.com/Tierras-virgenes/servuo-utils",
     author="vgonisanz",
     author_email="vgonisanz@gmail.com",
